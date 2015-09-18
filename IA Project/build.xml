@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<project name="GenAlgs" default="info">
+	<target name="info">
+		<echo>This can generate :</echo>
+		<echo>number -> Genetic algorithm to decompose number into a given number of num/ops.</echo>
+		<echo>commons -> Common package containing base of GenAlgs code</echo>
+	</target>
+	
+	
+	<property name="src.dir" value="src/" />
+	<property name="bin.dir" value="bin/" />
+	
+	<property name="number.outName" value="number"/>
+	<property name="number.dir" value="com/gloaguen2u/findFormula" />
+
+	<property name="antFood.outName" value="antfood"/>
+	<property name="antFood.dir" value="com/gloaguen2u/antFood"/>
+	
+	<property name="colors.outName" value="colors"/>
+	<property name="colors.dir" value="com/gloaguen2u/colorsMap" />
+	
+	<property name="commons.outName" value="commons" />
+	<property name="commons.dir" value="com/gloaguen2u/common" />
+	<property name="commons.genalgs.dir" value="${common.dir}/genalgs" />
+	<property name="commons.neuralnets.dir" value="${common.dir}/neuralnets" />
+	<property name="commons.kohonen.dir" value="${common.dir}/kohonen" />
+	
+	<target name="build">
+		<mkdir dir="${bin.dir}"/>
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" />
+	</target>
+	
+	<target name="numberJar" depends="build">
+		<jar destfile="${number.outName}.jar" basedir="${bin.dir}" includes="${commons.dir}/**,${number.dir}/**">
+			<manifest>
+				<attribute name="Main-Class" value="com.gloaguen2u.findFormula.Main"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="antJar" depends="build">
+		<jar destfile="${antFood.outName}.jar" basedir="${bin.dir}" includes="${commons.dir}/**,${antFood.dir}/**">
+			<manifest>
+				<attribute name="Main-Class" value="com.gloaguen2u.antFood.view.Console"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="colorsJar" depends="build">
+		<jar destfile="${colors.outName}.jar" basedir="${bin.dir}" includes="${commons.dir}/**,${colors.dir}/**">
+			<manifest>
+				<attribute name="Main-Class" value="com.gloaguen2u.colorsMap.Console"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="commonJar">
+		<jar destfile="${commons.outName}.jar" basedir="${bin.dir}" includes="${commons.dir}/**">
+		</jar>
+	</target>
+	
+	<target name="clean" description="cleans project setup">
+		<delete>
+			<fileset dir="${bin.dir}">
+				<include name="**" />
+			</fileset>
+			<filename name="${number.outName}.jar"/>
+			<filename name="${commons.outName}.jar"/>
+		</delete>
+	</target>
+	
+	<target name="number" depends="build, numberJar" description="Build number jar file."></target>
+	<target name="antFood" depends="build, antJar" description="Build ant food jar file"></target>
+	<target name="colors" depends="build, colorsJar" description="Build color map jar file"></target>
+	<target name="common" depends="build, commonJar" description="Build common jar file."></target>
+
+</project>
