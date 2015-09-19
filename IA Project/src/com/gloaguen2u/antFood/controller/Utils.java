@@ -1,9 +1,8 @@
 package com.gloaguen2u.antFood.controller;
 
 import com.gloaguen2u.antFood.controller.Ant.UtilsConnector;
-import com.gloaguen2u.common.neuralnets.FloatNeuron;
-
 import com.gloaguen2u.common.genalgs.Chromosome;
+import com.gloaguen2u.common.neuralnets.FloatNeuron;
 
 public abstract class Utils {
 	public static void createBrain(Chromosome c, UtilsConnector ant, int pos) {

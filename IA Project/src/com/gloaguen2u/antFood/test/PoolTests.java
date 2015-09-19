@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.gloaguen2u.antFood.controller.Ant;
 import com.gloaguen2u.antFood.controller.AntGene;
 import com.gloaguen2u.antFood.controller.AntPool;
-
+import com.gloaguen2u.common.FailedTestException;
 import com.gloaguen2u.common.genalgs.Chromosome;
 import com.gloaguen2u.common.genalgs.Entity;
 import com.gloaguen2u.common.genalgs.Gene;

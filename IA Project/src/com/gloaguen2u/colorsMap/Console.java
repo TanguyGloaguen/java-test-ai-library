@@ -2,9 +2,8 @@ package com.gloaguen2u.colorsMap;
 
 import java.util.ArrayList;
 
-import com.gloaguen2u.common.kohonen.World2D;
-
 import com.gloaguen2u.common.Data;
+import com.gloaguen2u.common.kohonen.World2D;
 
 public class Console {
 

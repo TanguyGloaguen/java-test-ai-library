@@ -19,6 +19,9 @@
 	<property name="colors.outName" value="colors"/>
 	<property name="colors.dir" value="com/gloaguen2u/colorsMap" />
 	
+	<property name="markov.outName" value="markov" />
+	<property name="markov.dir" value="com/gloaguen2u/markovStrings" />
+	
 	<property name="commons.outName" value="commons" />
 	<property name="commons.dir" value="com/gloaguen2u/common" />
 	<property name="commons.genalgs.dir" value="${common.dir}/genalgs" />
@@ -54,6 +57,14 @@
 		</jar>
 	</target>
 	
+	<target name="markovJar" depends="build">
+		<jar destfile="${markov.outName}.jar" basedir="${bin.dir}" includes="${commons.dir}/**,${markov.dir}/**">
+			<manifest>
+				<attribute name="Main-Class" value="com.gloaguen2u.markovStrings.view.Console"/>
+			</manifest>
+		</jar>
+	</target>
+	
 	<target name="commonJar">
 		<jar destfile="${commons.outName}.jar" basedir="${bin.dir}" includes="${commons.dir}/**">
 		</jar>
@@ -72,6 +83,7 @@
 	<target name="number" depends="build, numberJar" description="Build number jar file."></target>
 	<target name="antFood" depends="build, antJar" description="Build ant food jar file"></target>
 	<target name="colors" depends="build, colorsJar" description="Build color map jar file"></target>
+	<target name="markov" depends="build, markovJar" description="Build Markov Strings jar file"></target>
 	<target name="common" depends="build, commonJar" description="Build common jar file."></target>
 
 </project>

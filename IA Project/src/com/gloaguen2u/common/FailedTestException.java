@@ -1,4 +1,4 @@
-package com.gloaguen2u.antFood.test;
+package com.gloaguen2u.common;
 
 public class FailedTestException extends Exception {
 	/**

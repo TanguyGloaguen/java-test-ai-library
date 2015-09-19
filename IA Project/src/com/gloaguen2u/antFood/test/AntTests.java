@@ -2,7 +2,7 @@ package com.gloaguen2u.antFood.test;
 
 import com.gloaguen2u.antFood.controller.Ant;
 import com.gloaguen2u.antFood.controller.AntGene;
-
+import com.gloaguen2u.common.FailedTestException;
 import com.gloaguen2u.common.genalgs.Chromosome;
 import com.gloaguen2u.common.genalgs.Gene;
 

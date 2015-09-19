@@ -1,6 +1,7 @@
 package com.gloaguen2u.antFood.test;
 
 import com.gloaguen2u.antFood.controller.AntGene;
+import com.gloaguen2u.common.FailedTestException;
 
 public class GeneTests {
 	public static void testGene() throws FailedTestException {

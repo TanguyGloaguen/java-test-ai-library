@@ -1,6 +1,7 @@
 package com.gloaguen2u.antFood.test;
 
 import com.gloaguen2u.common.Data;
+import com.gloaguen2u.common.FailedTestException;
 
 public class Tests {
 	// Tests parameters
