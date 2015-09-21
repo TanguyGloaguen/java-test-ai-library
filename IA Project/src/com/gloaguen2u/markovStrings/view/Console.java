@@ -34,13 +34,14 @@ public class Console {
 			output.add(pool.getChain());
 		
 		for(Chain<String> out : output) {
+			String accu = "";
 			if(out != null) {
 				out.begin();
 				for(int i = 0; i < out.length(); i++) {
-					System.out.print(out.get() + " ");
+					accu += " " + out.get();
 					out.next();
 				}
-				System.out.println(".");
+				Logger.info(accu + ".");
 			}
 		}
 	}
@@ -85,11 +86,11 @@ public class Console {
 	}
 	
 	private static void defaultData() {
-		dataList.add("Je mange un carré de chocolat.");
+		dataList.add("Je mange un carre de chocolat.");
 		dataList.add("Je mange une pomme.");
 		dataList.add("Je suis un humain.");
 		dataList.add("Je fais des ronds dans l'eau.");
-		dataList.add("Je dessine des ronds et un carré.");
+		dataList.add("Je dessine des ronds et un carre.");
 		dataList.add("Je bois de l'eau gazeuse");
 	}
 	

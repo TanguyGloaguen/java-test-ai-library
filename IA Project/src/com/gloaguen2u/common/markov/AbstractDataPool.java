@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.gloaguen2u.common.Data;
-import com.gloaguen2u.common.Logger;
 
 public abstract class AbstractDataPool<T, U> implements DataPool<T, U> {
 
@@ -22,7 +21,6 @@ public abstract class AbstractDataPool<T, U> implements DataPool<T, U> {
 			else
 				next.put(node, 1);
 			sum++;
-			Logger.info("Added " + node.toString() + " . Sum : " + sum);
 		}
 		public void addEnd() {
 			sum++;
