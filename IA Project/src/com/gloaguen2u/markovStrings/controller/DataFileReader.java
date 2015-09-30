@@ -20,7 +20,7 @@ public class DataFileReader {
 		String s;
 		try {
 			while((s = f.readLine()) != null)
-				strings.add(s);
+				strings.add(s.replace("\"", "").replace("(", "").replace(")", "").replace("?", " ?").replace(",", " ,"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

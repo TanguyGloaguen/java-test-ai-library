@@ -1,5 +1,6 @@
 package com.gloaguen2u.markovStrings.view;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import com.gloaguen2u.common.Logger;
@@ -10,6 +11,7 @@ import com.gloaguen2u.markovStrings.model.SentenceDataPool;
 
 public class Console {
 	public static String filename = null;
+	public static String outFile = null;
 	public static int nbChains = 10;
 
 	public static DataPool<String, String> pool = new SentenceDataPool();
@@ -33,15 +35,46 @@ public class Console {
 		for(int i = 0; i < nbChains; i++)
 			output.add(pool.getChain());
 		
-		for(Chain<String> out : output) {
-			String accu = "";
-			if(out != null) {
-				out.begin();
-				for(int i = 0; i < out.length(); i++) {
-					accu += " " + out.get();
-					out.next();
+		if(outFile == null) {
+			// Output all chains to console.
+			for(Chain<String> out : output) {
+				String accu = "";
+				if(out != null) {
+					out.begin();
+					for(int i = 0; i < out.length(); i++) {
+						accu += " " + out.get();
+						out.next();
+					}
+					Logger.result(accu + ".");
 				}
-				Logger.info(accu + ".");
+			}
+		}
+		else {
+			// Output all chains to outFile.
+			try {
+				PrintWriter dataFile = new PrintWriter(outFile, "UTF-8");
+				dataFile.write("[");
+				for(Chain<String> out : output) {
+					dataFile.write("[");
+					if(out != null) {
+						out.begin();
+						for(int i = 0; i < out.length(); i++) {
+							dataFile.write("{\"string\":\"");
+							dataFile.write(out.get().replace("\"", "\\\""));
+							dataFile.write("\",\"prob\":\"");
+							dataFile.write(""+out.getProbability());
+							dataFile.write("\"}");
+							out.next();
+							if(i < out.length() - 1)
+								dataFile.write(",");
+						}
+					}
+					dataFile.write("],");
+				}
+				dataFile.write("[]]");
+				dataFile.close();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -57,9 +90,15 @@ public class Console {
 					case "-f":
 					case "--file":
 						inArg = true; argNum = 1; break;
+					case "-o":
+					case "--output":
+						inArg = true; argNum = 2; break;
+					case "-n":
+					case "--number":
+						inArg = true; argNum = 3; break;
 					case "-L":
 					case "--logger":
-						inArg = true; argNum = 2; break;
+						inArg = true; argNum = 4; break;
 					default :
 						throw new Exception(s);
 					}
@@ -69,6 +108,10 @@ public class Console {
 					case 1:
 						filename = s; break;
 					case 2:
+						outFile = s; break;
+					case 3:
+						nbChains = Integer.parseInt(s); break;
+					case 4:
 						Logger.setLogLevel(Integer.parseInt(s)); break;
 					}
 					inArg = false;

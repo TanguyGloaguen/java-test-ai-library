@@ -3,6 +3,7 @@ package com.gloaguen2u.colorsMap;
 import java.util.ArrayList;
 
 import com.gloaguen2u.common.Data;
+import com.gloaguen2u.common.Logger;
 import com.gloaguen2u.common.kohonen.World2D;
 
 public class Console {
@@ -90,6 +91,13 @@ public class Console {
 			help = true;
 		}
 		if(help) {
+			Logger.info("Usage :");
+			Logger.info("-i \t --iterations \t[1000]\tSets number of iterations before program ends.");
+			Logger.info("-x \t --size-x \t[40]\tSize (in units) of X coord map.");
+			Logger.info("-y \t --size-y \t[40]\tSize (in units) of Y coord map.");
+			Logger.info("-l \t --learning-rate \t[1]\tSets kohonen learning rate.");
+			Logger.info("-c \t --color \t[-]\tAdd a color (e.g. FFFFFF)");
+			Logger.info("-h \t --help \t[]\tDisplay this screen");
 			System.exit(0);
 		}
 		if(targets.isEmpty())

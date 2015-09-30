@@ -1,0 +1,211 @@
+<html>
+	<head>
+		<title>[RESULT] Markov chains</title>
+		<style>
+			#popup_background {
+				position: fixed;
+				top: 0; left: 0;
+				width: 100%; height: 100%;
+				background-color: rgba(0, 0, 0, 0.5);
+				z-index: 1200;
+				width: 100%;
+				height: 100%;
+			}
+			#popup_window {
+				background-color: white;
+				position: absolute;
+				top: 40%;
+				left: 30%;
+				width: 40%;
+				height: 20%;
+				border-radius: 10px;
+				border:1px dotted black;
+			}
+			#popup_window .zone {
+				display: block;
+				position: absolute;
+				top: 0; left: 0;
+				width: 100%;
+				height: 100%;
+				font-size: 100%;
+				text-align: center;
+			}
+			#content {
+				position: absolute;
+				top: 0;
+				left: 1%;
+				width: 98%;
+				height: 100%;
+			}
+			
+			#content_menu {
+				position: fixed;
+				background-color: white;
+				border: 1px dotted black;
+				border-radius: 0 0 10px 10px;
+				width: 100%;
+				height: 5%;
+			}
+			
+			.content_item {
+				display:block;
+				box-sizing: border-box;
+				width: 15%; height: 100%;
+				float: right;
+				border-radius: 5px;
+				border: 1px solid black;
+				text-align: center;
+				font-size: 1.5vw;
+			}
+			#list{
+				margin-top: 5%;
+			}
+			
+			.infCont {
+				display: none;
+			}
+			span:hover .infCont {
+				display:block;
+				position: absolute;
+				background-color: #DDD;
+				top: 5%;
+				border: 1px solid black;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="popup_background">
+			<div id="popup_window">
+				<div class="zone" id="drop_zone">Drop files here</div>
+				<div class="zone" id="load_zone" style="display: none;">Loading file...</div>
+				<div class="zone" id="error_zone" style="display: none;">There has been an error while reading. Click to retry.</div>
+			</div>
+		</div>
+		<div id="content">
+			<div id="content_menu">
+				<div class="content_item">
+					<div id="dispMed" style="color: #00C">Toggle Med</div>
+				</div>
+				<div class="content_item">
+					<div id="dispMax" style="color: #C00">Toggle Max</div>
+				</div>
+				<div class="content_item">
+					<div id="dispAvg" style="color: #0C0">Toggle Avg</div>
+				</div>
+				<div class="content_item">
+					<div id="clear_file">Clear file.</div>
+				</div>
+			</div>
+			<div id="list"></div>
+			<div id="log"></div>
+		</div>
+		<script>
+			// Elements importants de la page : zone de drop, fenêtre de popup, etc...
+			var popupWindow = document.getElementById('popup_background');
+			var dropZone = document.getElementById('drop_zone');
+			var loadZone = document.getElementById('load_zone');
+			var errZone = document.getElementById('error_zone');
+			
+			var countZone = document.getElementById('layer');
+			
+			var logs = document.getElementById('log');
+			
+			var sandbox = document.getElementById('display');
+			
+			var currPos = 0;
+			var dispAvg = true;
+			var dispMax = false;
+			var dispMed = false;
+			var dispNb = true;
+			var data;
+			
+			// Cosmétique : fonction d'affichage d'un popup.
+			function displayPopup(zone) {
+				var zoneList = popupWindow.getElementsByClassName("zone");
+				 for (var i = 0; i < zoneList.length; i++) {
+					zoneList[i].style.display = "none";
+				}
+				zone.style.display = "block";
+				popupWindow.style.display="block";
+			}
+			
+			// Fonctions de parsage, prend un fichier texte et le parse.
+			// Détection & récupération de l'ID
+			function dispLayer(tab, pos) {
+				var out = '<table><tr><th>id</th>';
+				out += '<th>text</th>';
+				out += '</tr>';
+				for(var i = 0; i < tab.length; i++) {
+					if(tab[i].length != undefined && tab[i].length != 0) {
+						out += "<tr><td>";
+						out += "" + (i+1);
+						out += '</td><td>';
+						for(var j = 0; j < tab[i].length; j++) {
+							out += '<span class="info">';
+							out += tab[i][j].string;
+							out += '<span style="display: inline-block; position: relative; width: 0; height: 0;"><span class="infCont">' + tab[i][j].prob + '</span></span></span>';
+							if(j < tab[i].length - 1)
+								out += " ";
+						}
+						out += ".</td></tr>";
+					}
+				}
+				out += '</table>';
+				document.getElementById('list').innerHTML = out;
+			}
+			
+			function handleFileSelect(evt) {
+				evt.stopPropagation();
+				evt.preventDefault();
+				
+				var fileList =evt.dataTransfer.files;
+				
+				// Cosmétique : on affiche le message de chargement et on retire le message de drop.
+				displayPopup(loadZone);
+				
+				var output = [];
+			
+				for (var i = 0, f; f = fileList[i]; i++) {
+					var reader = new FileReader();
+					reader.onloadend = function(event) {
+						var text = event.target.result;
+						try {
+							data = JSON.parse(text);
+							dispLayer(data);
+							popupWindow.style.display = "none";
+						}
+						catch(err) {
+							displayPopup(errZone);
+							errZone.innerHTML += "<br />" + err.name + " : " + err.message;
+							sandbox.style.display = "none";
+						}
+					}
+					reader.readAsText(f);
+				}
+			}
+			
+			
+			//Cosmétique, affiche "copier" lors du hover.
+			function handleDragOver(evt) {
+				evt.stopPropagation();
+				evt.preventDefault();
+				evt.dataTransfer.dropEffect = 'copier';
+			}
+			
+			// Suppression du fichier
+			function handleDelete(evt) {
+				document.getElementById('list').innerHTML = "";
+				displayPopup(dropZone);
+				sandbox.style.display = "none";
+			}
+
+			// Listeners
+			dropZone.addEventListener('dragover', handleDragOver, false);	// Cosmétique
+			dropZone.addEventListener('drop', handleFileSelect, false);	// Actions lors du drop du fichier
+			errZone.addEventListener('click', handleDelete, false);	// Action lors du clic sur "erreur"
+			
+			document.getElementById('clear_file').addEventListener('click', handleDelete, false);		// Action lors du clic sur "supprimer le fichier"
+		</script>
+
+	</body>
+</html>

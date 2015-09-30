@@ -9,8 +9,9 @@ public class SentenceDataPool implements DataPool<String, String> {
 	
 	@Override
 	public void putData(String data) {
-		for(String sent : data.split("\\.")) {
-			sorter.putData(sent.split(" "));
+		for(String sent : data.split("\\.\\s*")) {
+			if(sent.length() > 1)
+				sorter.putData(sent.split("\\s+"));
 		}
 	}
 
